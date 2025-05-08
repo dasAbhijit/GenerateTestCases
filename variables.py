@@ -50,14 +50,14 @@ business_terms = {'Author':'Name of the Author who designed the Requirements',
                   }
 
 
-example_brd=read_file('./resources/example/<resource-name>')
+example_brd=read_file('./resources/example/brd-ordertracking.md')
 
-example_erd=read_file('./resources/example/<resource-name>')
+example_erd=read_file('./resources/example/erd-ordertracking.md')
 
-example_tc=read_file('./resources/example/<resource-name>')
+example_tc=read_file('./resources/example/tc-ordertracking.csv')
 
-brd_path=read_file('./resources/target/brd-<resource-name>')
+brd_path=read_file('./resources/target/brd-ordercreation.md')
 brd= read_file(brd_path) if os.path.exists(brd_path) else "Info: BRD is not present, its mandatory. Please add it as - ./resources/target/brd-<resource-name>"
 
-erd_path = './resources/target/erd-<resource-name>'
+erd_path = './resources/target/erd-ordercreation.md'
 erd = read_file(erd_path) if os.path.exists(erd_path) else "Info: ERD is not present, its optional. Please add it as - ./resources/target/brd-<resource-name>"
