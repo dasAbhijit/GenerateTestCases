@@ -41,4 +41,3 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: test-case-results
-        path: output/
