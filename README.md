@@ -34,6 +34,11 @@ The generated test suite is not exhaustive and needs human review.
 
      Ensure the filenames match the expected format (e.g., `brd-dashboard.md`, `erd-dashboard.md`).
 
+4. **Add API KEY***
+
+     Run the command on terminal - 
+     Google Gemini : `export GOOGLE_API_KEY="<your_api_key>"`
+
 ## Usage
 
 1. Run the Application: <br>
