@@ -54,7 +54,7 @@ Keyword Dictionary: {keyword_dictionary}
 
 CSV
 {test_case_format}
-** Strictly follow this above output format, do not use "," use ";" insted.
+******* Strictly follow this above output format, do not use "," use ";" insted.
 
 ###Key improvements and explanations:###
 
