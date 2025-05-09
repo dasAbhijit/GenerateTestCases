@@ -1,5 +1,11 @@
 from utils import read_file
 import os
+from logger_config import setup_logger
+
+# Setup logger
+logger = setup_logger('variables')
+
+logger.info("Initializing variables module")
 
 brd_format='''# **Product Requirements: <Requirement Title>**
 
@@ -39,7 +45,7 @@ tc_format='''Test Scenario,Test Cases Title,Pre-requisites,Test Steps,Expected B
 Login Success,verify the login success with Google OAuth,1. a google account must be present,"1. Go to login page 2. Enter Google Account ID/Pass 3. Submit the page","1. user should be logged in 2. by default redirect to dashboard", -- link to figma --,High,Account,Sanity
 Login Failure,verify the login fails with invalid OAuth,,"1. Go to login page 2. Enter invalid Google Account ID/Pass 3. Submit the page","1. user should be shown the auth failure message 2. user should be kept logged out 3. user should be let to retry with valid details", -- link to figma --,High,Account,Sanity'''
 
-
+logger.debug("Loading business terms dictionary")
 business_terms = {'Author':'Name of the Author who designed the Requirements',
                   'Problem Statement':'Here the author describes the problem statement which needs the feature with description',
                   'Desired Outcomes' : 'Here the author describes the Outcome i.e. Expected Business and Product Behaviour',
@@ -49,15 +55,41 @@ business_terms = {'Author':'Name of the Author who designed the Requirements',
                   'Requirements': 'This section has to be read and undestood with importance. This section talks about the granular level business requirements, which is getting implemented. Each of these statements has to be tested with outmost importance'
                   }
 
+logger.info("Loading example files")
+try:
+    example_brd = read_file('./resources/example/brd-ordertracking.md')
+    logger.debug("Successfully loaded example BRD")
+except Exception as e:
+    logger.error(f"Error loading example BRD: {str(e)}", exc_info=True)
+    raise
 
-example_brd=read_file('./resources/example/brd-ordertracking.md')
+try:
+    example_erd = read_file('./resources/example/erd-ordertracking.md')
+    logger.debug("Successfully loaded example ERD")
+except Exception as e:
+    logger.error(f"Error loading example ERD: {str(e)}", exc_info=True)
+    raise
 
-example_erd=read_file('./resources/example/erd-ordertracking.md')
+try:
+    example_tc = read_file('./resources/example/tc-ordertracking.csv')
+    logger.debug("Successfully loaded example test cases")
+except Exception as e:
+    logger.error(f"Error loading example test cases: {str(e)}", exc_info=True)
+    raise
 
-example_tc=read_file('./resources/example/tc-ordertracking.csv')
-
-brd_path=read_file('./resources/target/brd-ordercreation.md')
-brd= read_file(brd_path) if os.path.exists(brd_path) else "Info: BRD is not present, its mandatory. Please add it as - ./resources/target/brd-<resource-name>"
+logger.info("Loading target files")
+brd_path = './resources/target/brd-ordercreation.md'
+try:
+    brd = read_file(brd_path) if os.path.exists(brd_path) else "Info: BRD is not present, its mandatory. Please add it as - ./resources/target/brd-<resource-name>"
+    logger.debug(f"BRD status: {'Loaded successfully' if os.path.exists(brd_path) else 'Not found'}")
+except Exception as e:
+    logger.error(f"Error loading BRD: {str(e)}", exc_info=True)
+    raise
 
 erd_path = './resources/target/erd-ordercreation.md'
-erd = read_file(erd_path) if os.path.exists(erd_path) else "Info: ERD is not present, its optional. Please add it as - ./resources/target/brd-<resource-name>"
+try:
+    erd = read_file(erd_path) if os.path.exists(erd_path) else "Info: ERD is not present, its optional. Please add it as - ./resources/target/brd-<resource-name>"
+    logger.debug(f"ERD status: {'Loaded successfully' if os.path.exists(erd_path) else 'Not found'}")
+except Exception as e:
+    logger.error(f"Error loading ERD: {str(e)}", exc_info=True)
+    raise
