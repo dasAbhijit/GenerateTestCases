@@ -29,7 +29,7 @@ jobs:
       env:
         GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       run: |
-        python -m generate_test_cases
+        python main.py
 
     - name: Upload Generated Test Cases
       uses: actions/upload-artifact@v4
