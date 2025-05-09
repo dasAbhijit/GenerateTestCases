@@ -22,13 +22,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # Step 2: Run main.py with default values
+    # Step 2: Create Output Directory
+    - name: Create Output Directory
+      run: mkdir -p output
+
+    # Step 3: Run main.py with default values
     - name: Run Test Case Generator
       run: |
         python main.py
 
-    # Step 3: Store Results as Artifact
-    - name: Upload Results - Generated Test Cases List 
+    # Step 4: Store Results as Artifact
+    - name: Upload Results - Generated Test Cases List
       uses: actions/upload-artifact@v3
       with:
         name: test-case-results
+        path: ./output/
+        
