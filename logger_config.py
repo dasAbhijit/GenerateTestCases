@@ -1,13 +1,23 @@
+"""Logging configuration for the application."""
 import logging
 import os
 from datetime import datetime
 
-# Create logs directory if it doesn't exist
-if not os.path.exists('logs'):
-    os.makedirs('logs')
+def setup_logger(name: str) -> logging.Logger:
+    """
+    Set up and configure a logger with both file and console handlers.
+    
+    Args:
+        name (str): Name of the logger
+        
+    Returns:
+        logging.Logger: Configured logger instance
+    """
+    # Create logs directory if it doesn't exist
+    if not os.path.exists('logs'):
+        os.makedirs('logs')
 
-# Configure logging
-def setup_logger(name):
+    # Configure logger
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
@@ -22,7 +32,8 @@ def setup_logger(name):
     console_handler.setFormatter(log_format)
 
     # Add handlers to the logger
-    # logger.addHandler(file_handler)
     logger.addHandler(console_handler)
+    # Uncomment to enable file logging
+    logger.addHandler(file_handler)
 
     return logger 

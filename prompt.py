@@ -1,3 +1,4 @@
+"""Prompt templates for test case generation."""
 from langchain.prompts import ChatPromptTemplate
 from logger_config import setup_logger
 
@@ -6,7 +7,8 @@ logger = setup_logger('prompt')
 
 logger.info("Initializing test case generation prompt template")
 
-tc_generation_prompt = '''You are a software testing expert specializing in test case generation. Your task is to analyze the given Business Requirements requirement and its corresponding Engineering Requirements to generate a complete set of test cases. This includes functional, non-functional, edge case, negative case, boundary value analysis, and exploratory test cases. In addition, identify and cover any missing scenarios that could lead to gaps in test coverage. For each test case, following the below instructions:
+# Test case generation prompt template
+TC_GENERATION_PROMPT = '''You are a software testing expert specializing in test case generation. Your task is to analyze the given Business Requirements requirement and its corresponding Engineering Requirements to generate a complete set of test cases. This includes functional, non-functional, edge case, negative case, boundary value analysis, and exploratory test cases. In addition, identify and cover any missing scenarios that could lead to gaps in test coverage. For each test case, following the below instructions:
 
 ###Instructions:###
 
@@ -98,10 +100,10 @@ Example Business Requirements: {sample_brd}
 Example Engineering Requirement: {sample_erd}
 
 Example Test Cases: {sample_test_cases}
-
 '''
 
 logger.debug("Creating ChatPromptTemplate from messages")
 tc_prompt = ChatPromptTemplate.from_messages([
-    ('system', tc_generation_prompt),])
+    ('system', TC_GENERATION_PROMPT),
+])
 logger.info("Successfully created ChatPromptTemplate")
