@@ -1,12 +1,38 @@
+from pathlib import Path
+from typing import Dict
+
 from langchain.prompts import ChatPromptTemplate
-from logger_config import setup_logger
 
-# Setup logger
-logger = setup_logger('prompt')
+from ..config.logging import get_logger
+from ..utils.file_service import FileService
 
-logger.info("Initializing test case generation prompt template")
+logger = get_logger(__name__)
 
-tc_generation_prompt = '''You are a software testing expert specializing in test case generation. Your task is to analyze the given Business Requirements requirement and its corresponding Engineering Requirements to generate a complete set of test cases. This includes functional, non-functional, edge case, negative case, boundary value analysis, and exploratory test cases. In addition, identify and cover any missing scenarios that could lead to gaps in test coverage. For each test case, following the below instructions:
+class PromptService:
+    """Service for managing prompts and templates."""
+    
+    def __init__(self):
+        """Initialize the prompt service."""
+        self._load_prompt_template()
+    
+    def _load_prompt_template(self) -> None:
+        """Load the test case generation prompt template."""
+        logger.info("Loading test case generation prompt template")
+        self.tc_generation_prompt = self._get_prompt_template()
+        logger.debug("Creating ChatPromptTemplate from messages")
+        self.tc_prompt = ChatPromptTemplate.from_messages([
+            ('system', self.tc_generation_prompt),
+        ])
+        logger.info("Successfully created ChatPromptTemplate")
+    
+    def _get_prompt_template(self) -> str:
+        """
+        Get the test case generation prompt template.
+        
+        Returns:
+            The prompt template string.
+        """
+        return '''You are a software testing expert specializing in test case generation. Your task is to analyze the given Business Requirements requirement and its corresponding Engineering Requirements to generate a complete set of test cases. This includes functional, non-functional, edge case, negative case, boundary value analysis, and exploratory test cases. In addition, identify and cover any missing scenarios that could lead to gaps in test coverage. For each test case, following the below instructions:
 
 ###Instructions:###
 
@@ -62,34 +88,6 @@ CSV
 {test_case_format}
 ******* Strictly follow this above output format, do not use "," use ";" insted.
 
-###Key improvements and explanations:###
-
-Clear Instructions: Provides a step-by-step guide on how to approach the task.
-
-Prioritization: Emphasizes the importance of the "Priority" column in the "Requirements" section.
-
-Test Case Structure: Defines the essential elements of each test case (ID, Title, Priority, etc.). This ensures consistency and completeness. Crucially, it now includes "Requirement ID" which is essential for traceability.
-
-Security Focus: Explicitly mentions the need to address security considerations.
-
-Desired Outcomes and Measuring Success: Connects the test cases to the overall business goals.
-
-Edge Cases and Error Handling: Prompts the generation of test cases for less common but important scenarios.
-
-Output Format: Specifies a desired output format (CSV) for easy integration with test management tools.
-
-Example: Includes a concrete example to illustrate the application of the prompt. This helps the model understand the expected output.
-
-Template Variables: Uses {business_requirement} and {keyword_dictionary} as placeholders for the actual input, making the prompt reusable.
-
-Concise Language: Uses clear and concise language to avoid ambiguity.
-
-Emphasis on User Interaction: Focuses on user actions within the web application, making the test cases more practical.
-
-CSV Output example: Provides a clear and usable example of the expected output format.
-
-Secondary Objective: Try to assert as many things as possible for each requirement.
-
 ###Example:###
 Here is an example of a Business Requirement, Engineering Requirement and test cases derived from it, use this as a reference to generate test cases for the given Business Requirement and Engineering Requirement.
 
@@ -98,10 +96,4 @@ Example Business Requirements: {sample_brd}
 Example Engineering Requirement: {sample_erd}
 
 Example Test Cases: {sample_test_cases}
-
-'''
-
-logger.debug("Creating ChatPromptTemplate from messages")
-tc_prompt = ChatPromptTemplate.from_messages([
-    ('system', tc_generation_prompt),])
-logger.info("Successfully created ChatPromptTemplate")
+''' 

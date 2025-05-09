@@ -1,4 +1,0 @@
-langchain
-langchain-google-genai
-pandas
-# Python built-in logging module

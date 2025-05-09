@@ -1,79 +1,115 @@
-# Test Case Generator
+# Generate Test Cases
 
-This project is designed to generate structured test cases in CSV format based on engineering and business requirements. It emphasizes clear instructions, prioritization, and traceability while addressing edge cases, error handling, and performance considerations.
+A Python tool that uses Language Models (LLM) to automatically generate test cases from business requirements and engineering specifications.
 
-The generated test suite is not exhaustive and needs human review.
+## Features
 
-## Project Structure
+- Automatically generates comprehensive test cases from business requirements
+- Supports multiple test case types (functional, non-functional, edge cases, etc.)
+- Uses Google's Gemini model for high-quality test case generation
+- Outputs test cases in CSV format for easy integration with test management tools
+- Comprehensive logging for debugging and monitoring
+- Configurable through settings
 
-1. `main.py` - Entry point for the application 
-2. `output/` - Directory for generated test case CSV files 
-3. `prompt.py` - Contains the logic and templates for test case generation 
-4. `requirements.txt` - Python dependencies 
-5. `resources/` - Contains example and target requirement files 
-6. `utils.py` - Utility functions 
-7. `variables.py` - Configuration file for paths, constants, and default values used across the project
+## Installation
 
-## Setup
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/generate-test-cases.git
+cd generate-test-cases
+```
 
-1. **Clone the Repository**
-    ```sh
-    git clone <repository-url>
-    cd <repository-directory>
-    ```
-    
-2. **Install Dependencies**
-    Ensure you have Python 3.12 or higher installed. Install the required dependencies using pip:
-    ```sh
-    pip install -r requirements.txt
-    ```
+2. Create and activate a virtual environment:
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
 
-3. **Prepare Resources**
-
-     Place your Business Requirement Document (BRD) and Engineering Requirement Document (ERD) files in the `resources/` directory.
-
-     Ensure the filenames match the expected format (e.g., `brd-dashboard.md`, `erd-dashboard.md`).
-
-4. **Add API KEY***
-
-     Run the command on terminal - 
-     Google Gemini : `export GOOGLE_API_KEY="<your_api_key>"`
+3. Install the package:
+```bash
+pip install -e .
+```
 
 ## Usage
 
-1. Run the Application: <br>
-     Execute the `main.py` script to generate test cases:
-     ```sh
-     python main.py
-     ```
+1. Place your business requirements document (BRD) in `resources/target/brd-<resource-name>.md`
+2. Optionally place your engineering requirements document (ERD) in `resources/target/erd-<resource-name>.md`
+3. Run the tool:
+```bash
+python -m generate_test_cases
+```
 
-2. Generated Output: <br>
-     - The generated test cases will be saved as CSV files in the `output/` directory.
-     - The filenames will include timestamps for easy identification (e.g., `generated-test-cases_YYYY-MM-DD_HH-MM-SS.csv`).
-     
-3. Modify Prompt or Variables: <br>
-     - To customize the test case generation logic, edit the templates and logic in `prompt.py`.
-     - Update constants, file paths, or default values in `variables.py` if needed.
+The generated test cases will be saved in the `output` directory with a timestamp in the filename.
 
-## Key Features
-- Functional Test Case Generation: Automatically generates test cases for each requirement.
-- Prioritization: Supports High, Medium, and Low priority test cases.
-- Edge Cases and Error Handling: Includes test cases for invalid inputs and unexpected scenarios.
-- Security Considerations: Ensures security risks are addressed in the test cases.
-- CSV Output: Outputs test cases in a structured CSV format for easy integration with test management tools.
+## Project Structure
 
-## Example Files
-- Example BRD: `resources/brd-dashboard.md`
-- Example ERD: `resources/erd-dashboard.md`
-- Example Test Cases: `output/tc-dashboard.csv`
+```
+generate-test-cases/
+├── src/
+│   └── generate_test_cases/
+│       ├── config/
+│       │   ├── logging.py
+│       │   └── settings.py
+│       ├── core/
+│       │   ├── llm_service.py
+│       │   └── prompt_service.py
+│       ├── utils/
+│       │   └── file_service.py
+│       └── __main__.py
+├── resources/
+│   ├── example/
+│   │   ├── brd-ordertracking.md
+│   │   ├── erd-ordertracking.md
+│   │   └── tc-ordertracking.csv
+│   └── target/
+│       ├── brd-ordercreation.md
+│       └── erd-ordercreation.md
+├── output/
+├── logs/
+├── tests/
+├── setup.py
+└── README.md
+```
 
-## Customization
-- Templates: Modify the test case structure or format in `prompt.py`.
-- Variables: Update paths, constants, or default values in `variables.py`.
+## Configuration
 
-## Troubleshooting
-- If the ERD file is missing, the script will log a message: "is not present".
-- Ensure all required files are placed in the correct directories before running the script.
+The tool can be configured through the following files:
+
+- `src/generate_test_cases/config/settings.py`: Main configuration file
+- `src/generate_test_cases/config/logging.py`: Logging configuration
+
+## Development
+
+1. Install development dependencies:
+```bash
+pip install -e ".[dev]"
+```
+
+2. Run tests:
+```bash
+pytest
+```
+
+3. Format code:
+```bash
+black src tests
+isort src tests
+```
+
+4. Run linting:
+```bash
+flake8 src tests
+mypy src tests
+```
 
 ## Contributing
-We encourage you to use this repository and share your feedback. If you encounter any issues or have suggestions for improvement, please submit them via the Issues tab. Pull requests are also welcome to enhance the project further.
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
