@@ -1,5 +1,6 @@
 name: Test Case Generator
-description: Generate test cases for the project using main.py
+description: Generate test cases for the project using the new package structure
+
 on:
   workflow_dispatch:
 
@@ -8,32 +9,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Setup Project
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Setup Python
+    - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
-    - name: Install Dependencies
+    - name: Install Package
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -e .
 
-    # Step 2: Create Output Directory
-    - name: Create Output Directory
-      run: mkdir -p output
-
-    # Step 3: Run main.py with default values
-    - name: Run Test Case Generator
+    - name: Create Required Directories
       run: |
-        python main.py
+        mkdir -p output logs resources/target
 
-    # Step 4: Store Results as Artifact
-    - name: Upload Results - Generated Test Cases List
+    - name: Run Test Case Generator
+      env:
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      run: |
+        python -m generate_test_cases
+
+    - name: Upload Generated Test Cases
       uses: actions/upload-artifact@v4
       with:
         name: test-case-results
         path: output/
+
+    - name: Upload Logs
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-case-logs
+        path: logs/

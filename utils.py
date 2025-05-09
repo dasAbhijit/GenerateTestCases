@@ -2,6 +2,7 @@
 from langchain.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 import pandas as pd
+import os
 from logger_config import setup_logger
 
 # Setup logger
@@ -11,8 +12,17 @@ logger = setup_logger('utils')
 LLM_MODEL = "gemini-2.0-flash"
 LLM_TEMPERATURE = 0.5
 
+# Get API key from environment variable
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+if not GOOGLE_API_KEY:
+    raise ValueError("GOOGLE_API_KEY environment variable is not set")
+
 logger.info(f"Initializing LLM with model: {LLM_MODEL}, temperature: {LLM_TEMPERATURE}")
-llm = ChatGoogleGenerativeAI(model=LLM_MODEL, temperature=LLM_TEMPERATURE)
+llm = ChatGoogleGenerativeAI(
+    model=LLM_MODEL,
+    temperature=LLM_TEMPERATURE,
+    google_api_key=GOOGLE_API_KEY
+)
 
 def read_file(file_path: str) -> str:
     """
