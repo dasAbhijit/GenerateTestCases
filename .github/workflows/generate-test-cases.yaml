@@ -33,8 +33,7 @@ jobs:
 
     # Step 4: Store Results as Artifact
     - name: Upload Results - Generated Test Cases List
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-case-results
-        path: ./output/
-        
+        path: output/
