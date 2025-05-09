@@ -1,15 +1,6 @@
 name: Test Case Generator
 description: Generate test cases for the project using main.py
 on:
-  workflow_call:
-    inputs:
-      test_case_file:
-        required: true
-        type: string
-        description: The path to the test case file to be generated.
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -24,7 +15,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.12'
+        python-version: '3.9.6'
 
     - name: Install Dependencies
       run: |
@@ -41,4 +32,3 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: test-case-results
-        path: output/
